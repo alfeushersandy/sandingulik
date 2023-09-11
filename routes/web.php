@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Landing\ArtikelController;
+use App\Http\Controllers\Landing\LandingController;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,8 +16,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', LandingController::class)->name('landing');
 
-Route::resource('/artikel', PostController::class);
+Route::get('/artikel', ArtikelController::class);
