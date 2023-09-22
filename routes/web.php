@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Landing\ArtikelController;
 use App\Http\Controllers\Landing\LandingController;
 use App\Http\Controllers\PostController;
@@ -20,4 +21,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', LandingController::class)->name('landing');
 
 Route::get('/artikel', ArtikelController::class);
-Route::resource('/admin', DashboardController::class);
+
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], function(){
+    Route::resource('/dashboard', DashboardController::class);
+    Route::resource('/posts', AdminPostController::class);
+});

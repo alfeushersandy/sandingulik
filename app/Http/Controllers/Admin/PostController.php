@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -12,9 +13,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        $post = Post::latest()->paginate(10);
-
-        return view('posts.index', compact('post'));
+        $posts = Post::latest()->paginate(10);
+        return view('admin.post.index', compact('posts'));
     }
 
     /**
@@ -22,7 +22,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.post.create');
     }
 
     /**
@@ -30,7 +30,16 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $image = $request->file('image');
+        $image->storeAs('public/posts', $image->hashName());
+
+        Post::create([
+            'title' => $request->title,
+            'content' => $request->konten,
+            'image' => $image->hashName()
+        ]);
+
+        return redirect()->route('admin.posts.index');
     }
 
     /**
@@ -38,7 +47,8 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $artikel = Post::findorfail($id);
+        return view('admin.post.detail', compact('artikel'));
     }
 
     /**
